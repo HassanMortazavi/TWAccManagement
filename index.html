@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropbox File Reader</title>
+</head>
+<body>
+    <h1>Read and Edit File from Dropbox</h1>
+    <button id="authorizeButton">Authorize with Dropbox</button>
+    <button id="getFileButton" disabled>Get File Content</button>
+    <button id="updateFileButton" disabled>Update File</button>
+    
+    <div id="fileContent" style="margin-top: 20px;"></div>
+
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+    <script>
+        const APP_KEY = 'frp1a9o3sauju6t'; // جایگزین با APP_KEY خود
+        let dbx;
+
+        // 1. Authorize with Dropbox
+        document.getElementById('authorizeButton').addEventListener('click', () => {
+            const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${APP_KEY}&response_type=token&redirect_uri=http://localhost`;
+            window.location.href = authUrl;
+        });
+
+        // 2. Get access token from URL after authorization
+        const urlParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = urlParams.get('access_token');
+
+        if (accessToken) {
+            dbx = new Dropbox.Dropbox({ accessToken });
+            document.getElementById('getFileButton').disabled = false;
+        }
+
+        // 3. Get file content from Dropbox
+        document.getElementById('getFileButton').addEventListener('click', () => {
+            dbx.filesDownload({ path: '/TWAccManagement/test.js' })
+                .then(response => {
+                    const fileContent = new TextDecoder().decode(response.fileBlob);
+                    document.getElementById('fileContent').textContent = fileContent;
+                    document.getElementById('updateFileButton').disabled = false;
+                })
+                .catch(error => console.error('Error reading file:', error));
+        });
+
+        // 4. Update file content on Dropbox
+        document.getElementById('updateFileButton').addEventListener('click', () => {
+            const newContent = `FLAG = ${Math.floor(Math.random() * 2)};`;  // تغییر محتوای FLAG
+            const updatedFileBlob = new Blob([newContent], { type: 'text/javascript' });
+
+            dbx.filesUpload({
+                path: '/TWAccManagement/test.js',
+                contents: updatedFileBlob,
+                mode: { '.tag': 'overwrite' }
+            })
+            .then(() => {
+                alert('File updated successfully!');
+            })
+            .catch(error => console.error('Error updating file:', error));
+        });
+    </script>
+</body>
+</html>
