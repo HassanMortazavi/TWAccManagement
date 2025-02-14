@@ -1,53 +1,77 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="fa">
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>ویرایش فایل دراپ‌باکس</title> 
-</head> 
-<body> 
-    <h2>اضافه کردن "سلام" به انتهای فایل دراپ‌باکس</h2> 
-    <button onclick="appendToFile()">اضافه کن</button> 
-    <script> 
-        const accessToken = "sl.u.AFgWG7NeLSs2ZK6DmkhIiYwwXg7iY9O9HPEJv_DmihK8RC6tHGr7cmNhC2Y2aLsJjtDzObka6jTVh25l3vPEnvrVbs6uT7Q4WbWoMJ86V76pO0UQO1_rgV9Xi2hLFZa2cR-ukijGQNVpG_8ULtAP44PgnpkxzICZxy9s4NGboYz9eCTMcbvaD57ZkO63rtZqjCdgDS-zDeyhy8vA-hgoTgvFR8oFtJUETm7HF3LMOLs3Qg5Pzv7H8mBMUUZzvjYJb-N1QmCcgzc41NnHO8xO-BVpF951IpW3IKWzp2CV187sjbbzj9w2FBRgCb9a8ZCNCyzt-pzRa_s3Xl35qCzKUUw0Z14K6jQ4zd39ptCD5PLAaj1538MY1qKJaepIL2Mym5EBtNRqBXFC05foX1VA4f4IIPrZL_LVURIMhs38O7cQeGKQRowHTUOg5v9jvEw1nVCKo4NQJ5A51QKgj2iR1RrVii2LS7JM2u3Vrd2mdXaBY-tP2z-F4l24j71J6ZU2pHvNMMNZxTUdVymgzlmkrB6aSs_LIPUla79-zJukUyPf_MUbtNCYJJ5Im_b1ES-Z5FtKEI-ebrNtFKtSkizcbxCAdZ3jJMr0GzxooC1BrM8jnuzyOxgPamTxkxAeZqRN6TPdw5pQZZG043jsGcslxmmr3vq0PEii1p8vQjM_bn3X1lIJnwt1QLyLhz4I9JE_cSld-cPMPMkWM_QLetjHQu6rpuacT-Gub8d7H-6JKlRakCUOdxduAB9ZD-M8wtK9gtFzb13HvRA46lT6HZtTZwidSmiE9syn_AWgytgOSJnEUViFjsnJ0sS9KhOqNyX84VRNrIJy4e7CQ0jE0BudIueoXuN83NQplGs41GcEx2bmkZ5Z-qukPoyqJUR2MN5numyaojMJSWQKXxGouUuWzluz2Bx3oTVx4vuJPamEFPIKZsQTibqT6AbQcSu5Sxc9hkIEMgxQeTN6Dzu6KTpvXc22pDwS4LMUOK7hw3lQ0DqxFPElxyMbwj72CIsbZ847vne7D6AYWEJtpYTrpbyrULhGWSr4TQx9AxDaSJL6uJpqPEgHGeqHNsaaQ8HbtXfusrlYaYG_n34uDCV1WzWTz2b-EJPEMtiRjigFr4z5y57R8dSyVGSWX7aVMQJGayqw875bSMVTzEh2Rn14xS_qEk8Z2vSO3H-_NfkznqMblgor5AsXfJbV644G2i8H1GtqVfLMtZTjiVYAsVAR5bsTVfKfp1qYxXCBj8JITdfWqPpsYEl6fxMwSA_a_gs9wokoX247fvcSBzSOjKK1bmmL38m7vMYC3kywt6XtVa0E4NRC5qwBzjyOiv_lk5Paccc5YVzhnV2kb3WXN_ccarjNGcCdTyaAL8FeAG1xQmJilT8r3nVqYwuGmMd_LTgU5lKNkAegpb9NBr9sbWv1NZYBb07WTvgPK6COccV0SiJB8CSHqA"; // 🔴 توکن دراپ‌باکس رو اینجا بذار 
-        const filePath = "test.js"; // 🔵 مسیر فایل در دراپ‌باکس 
-        async function appendToFile() { 
-            try { 
-                // ۱️⃣ خواندن محتوای فعلی فایل 
-                let getFileUrl = "https://content.dropboxapi.com/2/files/download"; 
-                let getFileResponse = await fetch(getFileUrl, { 
-                    method: "POST", 
-                    headers: { 
-                        "Authorization": `Bearer ${accessToken}`, 
-                        "Dropbox-API-Arg": JSON.stringify({ "path": filePath }) 
-                    } 
-                }); 
-                if (!getFileResponse.ok) { 
-                    throw new Error("خطا در خواندن فایل: " + await getFileResponse.text());
-                } 
-                let currentContent = await getFileResponse.text(); // محتوای قبلی 
-                let newContent = currentContent + "\nsalam"; 
-                let uploadUrl = "https://content.dropboxapi.com/2/files/upload"; 
-                let uploadResponse = await fetch(uploadUrl, { 
-                    method: "POST", 
-                    headers: { 
-                        "Authorization": `Bearer ${accessToken}`, 
-                        "Dropbox-API-Arg": JSON.stringify({ 
-                            "path": filePath, 
-                            "mode": "overwrite" 
-                        }), 
-                        "Content-Type": "application/octet-stream" 
-                    }, 
-                    body: newContent 
-                }); 
-                if (!uploadResponse.ok) { 
-                    throw new Error("خطا در ذخیره فایل: " + await uploadResponse.text());
-                } 
-                alert("✅ متن 'سلام' به فایل اضافه شد!");
-            } catch (error) { 
-                alert("❌ خطا: " + error.message);
-            } 
-        } 
-    </script> 
-</body> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ویرایش فایل دراپ‌باکس</title>
+</head>
+<body>
+  <h2>اضافه کردن "سلام" به انتهای فایل دراپ‌باکس</h2>
+  <button onclick="appendToFile()">اضافه کن</button>
+  
+  <script>
+    const accessToken = "YOUR_ACCESS_TOKEN";  // توکن دراپ‌باکس
+    const filePath = "/test.txt";  // مسیر فایل در Dropbox
+
+    async function appendToFile() {
+      let currentContent = "";
+      
+      // ۱. تلاش برای خواندن محتوای فعلی فایل
+      try {
+        const getFileUrl = "https://content.dropboxapi.com/2/files/download";
+        const getFileResponse = await fetch(getFileUrl, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Dropbox-API-Arg": JSON.stringify({ "path": filePath })
+          }
+        });
+        
+        if (getFileResponse.ok) {
+          currentContent = await getFileResponse.text();
+        } else {
+          const errorText = await getFileResponse.text();
+          // اگر فایل وجود نداشته باشد، Dropbox معمولا خطای "path/not_found" می‌دهد
+          if (errorText.indexOf("path/not_found") !== -1) {
+            currentContent = "";
+          } else {
+            throw new Error("خطا در خواندن فایل: " + errorText);
+          }
+        }
+      } catch (error) {
+        alert("❌ خطا در خواندن فایل: " + error.message);
+        return;
+      }
+      
+      // ۲. اضافه کردن متن "سلام" به انتهای محتوا
+      const newContent = currentContent + "\nسلام";
+      // تبدیل رشته به باینری
+      const encodedContent = new TextEncoder().encode(newContent);
+      
+      // ۳. آپلود (یا ایجاد) فایل با محتوای جدید
+      try {
+        const uploadUrl = "https://content.dropboxapi.com/2/files/upload";
+        const uploadResponse = await fetch(uploadUrl, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Dropbox-API-Arg": JSON.stringify({
+              "path": filePath,
+              "mode": "overwrite"
+            }),
+            "Content-Type": "application/octet-stream"
+          },
+          body: encodedContent
+        });
+        
+        if (!uploadResponse.ok) {
+          throw new Error("خطا در ذخیره فایل: " + await uploadResponse.text());
+        }
+        alert("✅ متن 'سلام' به فایل اضافه شد!");
+      } catch (error) {
+        alert("❌ خطا در ذخیره فایل: " + error.message);
+      }
+    }
+  </script>
+</body>
 </html>
