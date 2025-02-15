@@ -84,7 +84,14 @@ th {
   background-color: #e4e4e4;
   cursor: pointer;
 }
-
+.village-menu {
+  max-height: 400px; /* حداکثر ارتفاع که برای نوار اسکرول تنظیم می‌شود */
+  overflow-y: auto;  /* فعال کردن اسکرول عمودی */
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
 .village-item:hover {
   background-color: #ddd;
 }
