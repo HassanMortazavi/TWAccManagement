@@ -48,12 +48,12 @@ function checkMap() {
         fetchVillagesData();
     }
 }
-
+alert("این یک پیام پاپ‌آپ است!");
 // Populate datalist for Source Village in Command Form
 function populateVillageOptions() {
     const datalist = document.getElementById("villageOptions");
     datalist.innerHTML = "";
-    alert("این یک پیام پاپ‌آپ است!");
+    
     my_villages.forEach(village => {
         const option = document.createElement("option");
         option.value = village[1]; // Village name
