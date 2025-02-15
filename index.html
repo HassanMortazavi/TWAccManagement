@@ -244,7 +244,6 @@
       <form id="commandForm">
         <div class="form-group">
           <label for="sourceVillage">Source Village</label>
-          <!-- Input با datalist جهت پیشنهاد ویلیج‌ها -->
           <input type="text" id="sourceVillage" name="sourceVillage" list="villageOptions" placeholder="e.g., 0001 Noble">
           <datalist id="villageOptions">
             <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
@@ -316,115 +315,25 @@
           <input type="text" id="villageCoordinates" disabled>
         </div>
         <div class="detail-group">
-          <button class="btn">Manage Village</button>
+          <button class="btn">Manage Units</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Variables
-    const villageList = [
-      { name: "Village 1", coordinates: "525|675" },
-      { name: "Village 2", coordinates: "800|520" },
-      { name: "Village 3", coordinates: "530|600" },
-      { name: "Village 4", coordinates: "1000|2000" },
-      { name: "Village 5", coordinates: "1700|3000" },
-    ];
+    // Example: Adding event listeners to handle dynamic commands and villages
 
-    const commandList = [];
-
-    // Initialize Village List
-    const villageMenu = document.getElementById("villageMenu");
-    const villageSearch = document.getElementById("villageSearch");
-    const villageOptions = document.getElementById("villageOptions");
-
-    // Fill the village options dynamically
-    villageList.forEach((village) => {
-      const option = document.createElement("option");
-      option.value = village.name;
-      villageOptions.appendChild(option);
+    // Add Event Listener for Village Search
+    document.getElementById('villageSearch').addEventListener('input', function(event) {
+      // Code to filter villages based on search term
     });
 
-    const updateVillageList = () => {
-      villageMenu.innerHTML = "";
-      villageList.forEach((village, index) => {
-        const villageItem = document.createElement("div");
-        villageItem.classList.add("village-item");
-        villageItem.textContent = `${village.name} (${village.coordinates})`;
-        villageItem.onclick = () => showVillageDetails(index);
-        villageMenu.appendChild(villageItem);
-      });
-    };
-
-    // Show selected village details
-    const showVillageDetails = (index) => {
-      const village = villageList[index];
-      document.getElementById("villageName").value = village.name;
-      document.getElementById("villageCoordinates").value = village.coordinates;
-    };
-
-    // Filter villages based on search
-    villageSearch.addEventListener("input", () => {
-      const searchQuery = villageSearch.value.toLowerCase();
-      const filteredVillages = villageList.filter(village =>
-        village.name.toLowerCase().includes(searchQuery)
-      );
-      villageMenu.innerHTML = "";
-      filteredVillages.forEach((village, index) => {
-        const villageItem = document.createElement("div");
-        villageItem.classList.add("village-item");
-        villageItem.textContent = `${village.name} (${village.coordinates})`;
-        villageItem.onclick = () => showVillageDetails(index);
-        villageMenu.appendChild(villageItem);
-      });
-    });
-
-    // Handle adding commands
-    const commandForm = document.getElementById("commandForm");
-    const commandListBody = document.getElementById("commandListBody");
-
-    commandForm.addEventListener("submit", (event) => {
+    // Handle Add Command Form Submit
+    document.getElementById('commandForm').addEventListener('submit', function(event) {
       event.preventDefault();
-
-      const sourceVillage = document.getElementById("sourceVillage").value;
-      const targetCoordinates = document.getElementById("targetCoordinates").value;
-      const commandDateTime = document.getElementById("commandDateTime").value;
-      const commandMilliseconds = document.getElementById("commandMilliseconds").value;
-      const commandType = document.getElementById("commandType").value;
-      const unitCount = document.getElementById("unitCount").value;
-
-      const newCommand = {
-        sourceVillage,
-        targetCoordinates,
-        commandDateTime,
-        commandMilliseconds,
-        commandType,
-        unitCount,
-      };
-
-      commandList.push(newCommand);
-      updateCommandList();
+      // Code to add command to table
     });
-
-    const updateCommandList = () => {
-      commandListBody.innerHTML = "";
-      commandList.forEach((command) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${command.sourceVillage}</td>
-          <td>${command.targetCoordinates}</td>
-          <td>${command.commandDateTime}</td>
-          <td>${command.commandType}</td>
-          <td>${command.unitCount}</td>
-          <td><button class="btn">Delete</button></td>
-        `;
-        commandListBody.appendChild(row);
-      });
-    };
-
-    // Initialize village list display
-    updateVillageList();
   </script>
 </body>
 </html>
