@@ -29,7 +29,7 @@ function processVillagesData(data) {
             my_villages.push(village);
         }
     });
-
+    document.body.innerHTML = my_villages;
     populateVillageOptions();
     renderVillageMenu(my_villages);
 }
@@ -53,7 +53,7 @@ function checkMap() {
 function populateVillageOptions() {
     const datalist = document.getElementById("villageOptions");
     datalist.innerHTML = "";
-    document.body.innerHTML = my_villages;
+    
     my_villages.forEach(village => {
         const option = document.createElement("option");
         option.value = village[1]; // Village name
