@@ -2,191 +2,150 @@
 var player_id = 11403285;
 var VILLAGE_TIME = 'mapVillageTime'; 
 var VILLAGES_LIST = 'mapVillagesList'; 
-var TIME_INTERVAL = 60 * 60 * 1000; /*refresh map every 1 hour*/
+var TIME_INTERVAL = 60 * 60 * 1000; // Refresh map every 1 hour
 var villages = [];
 var barbarians = [];
 var my_villages = [];
 
 function fetchVillagesData() {
     $.get('https://en145.tribalwars.net/map/village.txt', function (data) {
-        villages = CSVToArray(data);
-        localStorage.setItem(VILLAGE_TIME, Date.parse(new Date()));
+        localStorage.setItem(VILLAGE_TIME, Date.now());
         localStorage.setItem(VILLAGES_LIST, data);
-    })
-        .done(function () {
-            findOwnandBarbarianVillages();
-        })
-        .fail(function (error) {
-            console.error(`${scriptInfo()} Error:`, error);
-        });
-}
-
-function findOwnandBarbarianVillages() {
-    villages.forEach((village) => {
-        if (village[4] == '0') {
-            barbarians.push(village);
-        }else if (village[4] == player_id){
-			my_villages.push(village);
-		}
+        processVillagesData(data);
+    }).fail(function (error) {
+        console.error("Error fetching village data:", error);
     });
 }
 
-function CSVToArray(strData, strDelimiter) {
-    strDelimiter = strDelimiter || ',';
-    var objPattern = new RegExp(
-        '(\\' +
-            strDelimiter +
-            '|\\r?\\n|\\r|^)' +
-            '(?:"([^"]*(?:""[^"]*)*)"|' +
-            '([^"\\' +
-            strDelimiter +
-            '\\r\\n]*))',
-        'gi'
-    );
-    var arrData = [[]];
-    var arrMatches = null;
-    while ((arrMatches = objPattern.exec(strData))) {
-        var strMatchedDelimiter = arrMatches[1];
-        if (
-            strMatchedDelimiter.length &&
-            strMatchedDelimiter !== strDelimiter
-        ) {
-            arrData.push([]);
+function processVillagesData(data) {
+    villages = CSVToArray(data);
+    barbarians = [];
+    my_villages = [];
+
+    villages.forEach(village => {
+        if (village[4] === '0') {
+            barbarians.push(village);
+        } else if (village[4] == player_id) {
+            my_villages.push(village);
         }
-        var strMatchedValue;
+    });
 
-        if (arrMatches[2]) {
-            strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
-        } else {
-            strMatchedValue = arrMatches[3];
-        }
-        arrData[arrData.length - 1].push(strMatchedValue);
-    }
-    return arrData;
-}
-
-function checkMap(){
-	if (localStorage.getItem(VILLAGES_LIST) != null) {
-		var mapVillageTime = parseInt(localStorage.getItem(VILLAGE_TIME));
-		var data = localStorage.getItem(VILLAGES_LIST);
-		villages = CSVToArray(data);
-		findOwnandBarbarianVillages();
-		if (Date.parse(new Date()) >= mapVillageTime + TIME_INTERVAL) {
-			/* hour has passed, refetch village.txt*/
-			fetchVillagesData();
-		} 
-	} else {
-		fetchVillagesData();
-	}
-}
-
-checkMap();
-
-    // Populate datalist for Source Village in Command Form
-    function populateVillageOptions() {
-      const datalist = document.getElementById("villageOptions");
-      datalist.innerHTML = "";
-      my_villages.forEach(village => {
-        const option = document.createElement("option");
-        option.value = village[1];
-        datalist.appendChild(option);
-      });
-    }
     populateVillageOptions();
-    
-    // --- Village Manager Section ---
-    let filteredVillages = villages.slice(); // Start with full list
-    const villageMenuEl = document.getElementById('villageMenu');
-    const villageDetailsEl = document.getElementById('villageDetails');
-    const villageSearchInput = document.getElementById('villageSearch');
-    
-    function renderVillageMenu(list) {
-      villageMenuEl.innerHTML = '';
-      list.forEach(village => {
+    renderVillageMenu(my_villages);
+}
+
+function CSVToArray(data) {
+    return data.trim().split("\n").map(row => row.split(","));
+}
+
+function checkMap() {
+    let cachedData = localStorage.getItem(VILLAGES_LIST);
+    let lastFetchTime = parseInt(localStorage.getItem(VILLAGE_TIME) || "0");
+
+    if (cachedData && Date.now() < lastFetchTime + TIME_INTERVAL) {
+        processVillagesData(cachedData);
+    } else {
+        fetchVillagesData();
+    }
+}
+
+// Populate datalist for Source Village in Command Form
+function populateVillageOptions() {
+    const datalist = document.getElementById("villageOptions");
+    datalist.innerHTML = "";
+    my_villages.forEach(village => {
+        const option = document.createElement("option");
+        option.value = village[1]; // Village name
+        datalist.appendChild(option);
+    });
+}
+
+// --- Village Manager Section ---
+let filteredVillages = [];
+const villageMenuEl = document.getElementById('villageMenu');
+const villageDetailsEl = document.getElementById('villageDetails');
+const villageSearchInput = document.getElementById('villageSearch');
+
+function renderVillageMenu(list) {
+    villageMenuEl.innerHTML = '';
+    list.forEach(village => {
         const item = document.createElement('div');
         item.className = 'village-item';
-        // نمایش نام ویلیج به همراه مختصات در پرانتز
         item.textContent = `${village[1]} (${village[2]})`;
         item.onclick = () => loadVillageDetails(village[0]);
         villageMenuEl.appendChild(item);
-      });
-    }
-    
-    function loadVillageDetails(villageId) {
-      const village = my_villages.find(v => v[0] === villageId);
-      if (!village) return;
-      
-      villageDetailsEl.innerHTML = `
+    });
+}
+
+function loadVillageDetails(villageId) {
+    const village = my_villages.find(v => v[0] === villageId);
+    if (!village) return;
+
+    villageDetailsEl.innerHTML = `
         <h2>${village[1]} Settings</h2>
         <form id="villageForm">
           <div class="detail-group">
             <label for="villageName">Village Name</label>
-            <input type="text" id="villageName" name="villageName" value="${village[1]}">
+            <input type="text" id="villageName" value="${village[1]}">
           </div>
           <div class="detail-group">
             <label for="coordinates">Coordinates</label>
-            <input type="text" id="coordinates" name="coordinates" value="${village[2]}">
+            <input type="text" id="coordinates" value="${village[2]}">
           </div>
           <div class="detail-group">
             <label for="someSetting">Specific Setting</label>
-            <input type="text" id="someSetting" name="someSetting" value="${village.someSetting}">
+            <input type="text" id="someSetting" value="Default Value">
           </div>
           <button type="submit" class="btn">Save Changes</button>
         </form>
-      `;
-      
-      document.getElementById('villageForm').addEventListener('submit', function(e) {
+    `;
+
+    document.getElementById('villageForm').addEventListener('submit', function (e) {
         e.preventDefault();
-        village.name = document.getElementById('villageName').value;
-        village.coordinates = document.getElementById('coordinates').value;
-        village.someSetting = document.getElementById('someSetting').value;
         alert('Village settings saved!');
-        renderVillageMenu(filteredVillages);
-      });
-    }
-    
-    villageSearchInput.addEventListener('input', function() {
-      const query = villageSearchInput.value.trim().toLowerCase();
-      filteredVillages = villages.filter(village => village.name.toLowerCase().includes(query));
-      renderVillageMenu(filteredVillages);
+        renderVillageMenu(my_villages);
     });
-    
+}
+
+villageSearchInput.addEventListener('input', function () {
+    const query = villageSearchInput.value.trim().toLowerCase();
+    filteredVillages = my_villages.filter(village => village[1].toLowerCase().includes(query));
     renderVillageMenu(filteredVillages);
-    
-    // --- Scheduled Commands Section ---
-    let commands = [];
-    const commandForm = document.getElementById("commandForm");
-    const commandTableBody = document.querySelector("#commandTable tbody");
-    
-    commandForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const sourceVillage = document.getElementById("sourceVillage").value;
-      const targetCoordinates = document.getElementById("targetCoordinates").value;
-      const commandDateTime = document.getElementById("commandDateTime").value;
-      const commandMilliseconds = document.getElementById("commandMilliseconds").value || "0";
-      const commandType = document.getElementById("commandType").value;
-      const unitCount = document.getElementById("unitCount").value;
-      
-      // ترکیب زمان تاریخ و میلی ثانیه به صورت یک رشته
-      const fullDateTime = commandDateTime + "." + commandMilliseconds;
-      
-      const command = {
+});
+
+// --- Scheduled Commands Section ---
+let commands = [];
+const commandForm = document.getElementById("commandForm");
+const commandTableBody = document.querySelector("#commandTable tbody");
+
+commandForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const sourceVillage = document.getElementById("sourceVillage").value;
+    const targetCoordinates = document.getElementById("targetCoordinates").value;
+    const commandDateTime = document.getElementById("commandDateTime").value;
+    const commandMilliseconds = document.getElementById("commandMilliseconds").value || "0";
+    const commandType = document.getElementById("commandType").value;
+    const unitCount = document.getElementById("unitCount").value;
+
+    const fullDateTime = commandDateTime + "." + commandMilliseconds;
+
+    const command = {
         id: Date.now(),
         sourceVillage,
         targetCoordinates,
         commandDateTime: fullDateTime,
         commandType,
         unitCount
-      };
-      
-      commands.push(command);
-      renderCommandTable();
-      commandForm.reset();
-    });
-    
-    function renderCommandTable() {
-      commandTableBody.innerHTML = "";
-      commands.forEach(cmd => {
+    };
+
+    commands.push(command);
+    renderCommandTable();
+    commandForm.reset();
+});
+
+function renderCommandTable() {
+    commandTableBody.innerHTML = "";
+    commands.forEach(cmd => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${cmd.sourceVillage}</td>
@@ -197,10 +156,12 @@ checkMap();
           <td><button onclick="deleteCommand(${cmd.id})" class="btn">Delete</button></td>
         `;
         commandTableBody.appendChild(tr);
-      });
-    }
-    
-    function deleteCommand(id) {
-      commands = commands.filter(cmd => cmd.id !== id);
-      renderCommandTable();
-    }
+    });
+}
+
+function deleteCommand(id) {
+    commands = commands.filter(cmd => cmd.id !== id);
+    renderCommandTable();
+}
+
+checkMap();
