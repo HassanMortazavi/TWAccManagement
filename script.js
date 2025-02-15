@@ -80,24 +80,15 @@ function checkMap(){
 	}
 }
 
-    
-    for (let i = 1; i <= 2000; i++) {
-      const villageNumber = i.toString().padStart(4, '0');
-      villages.push({
-        id: i,
-        name: `${villageNumber} Noble`,
-        coordinates: `${525 + i % 100}|${675 + i % 100}`,
-        someSetting: `Setting ${i}`
-      });
-    }
-    
+checkMap();
+
     // Populate datalist for Source Village in Command Form
     function populateVillageOptions() {
       const datalist = document.getElementById("villageOptions");
       datalist.innerHTML = "";
-      villages.forEach(village => {
+      my_villages.forEach(village => {
         const option = document.createElement("option");
-        option.value = village.name;
+        option.value = village[1];
         datalist.appendChild(option);
       });
     }
@@ -115,26 +106,26 @@ function checkMap(){
         const item = document.createElement('div');
         item.className = 'village-item';
         // نمایش نام ویلیج به همراه مختصات در پرانتز
-        item.textContent = `${village.name} (${village.coordinates})`;
-        item.onclick = () => loadVillageDetails(village.id);
+        item.textContent = `${village[1]} (${village[2]})`;
+        item.onclick = () => loadVillageDetails(village[0]);
         villageMenuEl.appendChild(item);
       });
     }
     
     function loadVillageDetails(villageId) {
-      const village = villages.find(v => v.id === villageId);
+      const village = my_villages.find(v => v[0] === villageId);
       if (!village) return;
       
       villageDetailsEl.innerHTML = `
-        <h2>${village.name} Settings</h2>
+        <h2>${village[1]} Settings</h2>
         <form id="villageForm">
           <div class="detail-group">
             <label for="villageName">Village Name</label>
-            <input type="text" id="villageName" name="villageName" value="${village.name}">
+            <input type="text" id="villageName" name="villageName" value="${village[1]}">
           </div>
           <div class="detail-group">
             <label for="coordinates">Coordinates</label>
-            <input type="text" id="coordinates" name="coordinates" value="${village.coordinates}">
+            <input type="text" id="coordinates" name="coordinates" value="${village[2]}">
           </div>
           <div class="detail-group">
             <label for="someSetting">Specific Setting</label>
