@@ -5,101 +5,117 @@
   <title>مدیریت ویلیج‌ها - Tribal Wars</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* تنظیمات پایه */
+    /* تنظیمات کلی */
     body {
-      background-color: #f5f5f5;
       font-family: 'Tahoma', sans-serif;
       margin: 0;
       padding: 0;
       direction: rtl;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
+      background-color: #f5f5f5;
     }
     header {
-      background: #4CAF50;
-      color: white;
+      background-color: #4CAF50;
+      color: #fff;
       padding: 15px 20px;
       text-align: center;
     }
-    /* بخش تنظیمات */
-    .settings {
+    .general-settings {
       background: #fff;
-      border-radius: 5px;
+      margin: 10px;
       padding: 20px;
+      border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
     }
-    .settings h2 {
+    .general-settings h2 {
       margin-top: 0;
     }
-    .settings form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+    .general-settings .detail-group {
+      margin-bottom: 15px;
     }
-    .settings .form-group {
-      flex: 1 1 200px;
-    }
-    .settings label {
+    .general-settings label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
-    .settings input, .settings select {
+    .general-settings input, 
+    .general-settings select {
       width: 100%;
       padding: 8px;
       box-sizing: border-box;
     }
-    .settings .btn {
+    .general-settings .btn {
       background: #4CAF50;
       color: white;
-      padding: 10px 20px;
+      padding: 10px 15px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    .settings .btn:hover {
+    .general-settings .btn:hover {
       background: #45a049;
     }
-    /* بخش ویلیج‌ها */
-    .villages {
+    /* ساختار صفحه با سایدبار و پنل جزئیات */
+    .main-container {
+      display: flex;
+      height: calc(100vh - 180px); /* ارتفاع تنظیم شده با توجه به header و تنظیمات کلی */
+      margin: 10px;
+      gap: 10px;
+    }
+    /* استایل سایدبار (لیست ویلیج‌ها) */
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    .village-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .village-item:hover {
+      background-color: #f1f1f1;
+    }
+    /* استایل پنل جزئیات ویلیج */
+    .details-panel {
+      flex: 1;
       background: #fff;
       border-radius: 5px;
       padding: 20px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
     }
-    .villages h2 {
+    .details-panel h2 {
       margin-top: 0;
     }
-    .village-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+    .details-panel .detail-group {
+      margin-bottom: 15px;
     }
-    .village-card {
-      background: #fff;
-      border-radius: 5px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      flex: 1 1 calc(33.333% - 20px);
+    .details-panel label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .details-panel input {
+      width: 100%;
+      padding: 8px;
       box-sizing: border-box;
     }
-    .village-card h3 {
-      margin-top: 0;
-    }
-    .village-card .btn {
-      margin-top: 10px;
+    .details-panel .btn {
       background: #2196F3;
-      border: none;
-      padding: 8px 15px;
       color: #fff;
+      padding: 10px 15px;
+      border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    .village-card .btn:hover {
+    .details-panel .btn:hover {
       background: #1976D2;
     }
   </style>
@@ -108,86 +124,118 @@
   <header>
     <h1>مدیریت ویلیج‌ها - Tribal Wars</h1>
   </header>
-  <div class="container">
-    <!-- بخش تنظیمات -->
-    <div class="settings">
-      <h2>تنظیمات</h2>
-      <form id="settingsForm">
-        <div class="form-group">
-          <label for="autoclickInterval">زمان بین کلیک‌ها (میلی‌ثانیه)</label>
-          <input type="number" id="autoclickInterval" name="autoclickInterval" value="1000">
-        </div>
-        <div class="form-group">
-          <label for="enableAutoClick">فعال کردن اتوکلیکر</label>
-          <select id="enableAutoClick" name="enableAutoClick">
-            <option value="true">بله</option>
-            <option value="false">خیر</option>
-          </select>
-        </div>
-        <!-- می‌توانید فیلدهای بیشتری اضافه کنید -->
-        <div class="form-group" style="flex-basis: 100%;">
-          <button type="submit" class="btn">ذخیره تنظیمات</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- بخش ویلیج‌ها -->
-    <div class="villages">
-      <h2>لیست ویلیج‌ها</h2>
-      <div class="village-list" id="villageList">
-        <!-- کارت‌های ویلیج اینجا قرار می‌گیرند -->
+  
+  <!-- تنظیمات کلی -->
+  <div class="general-settings">
+    <h2>تنظیمات کلی</h2>
+    <form id="generalSettingsForm">
+      <div class="detail-group">
+        <label for="autoclickInterval">زمان بین کلیک‌ها (میلی‌ثانیه)</label>
+        <input type="number" id="autoclickInterval" name="autoclickInterval" value="1000">
+      </div>
+      <div class="detail-group">
+        <label for="enableAutoClick">فعال کردن اتوکلیکر</label>
+        <select id="enableAutoClick" name="enableAutoClick">
+          <option value="true">بله</option>
+          <option value="false">خیر</option>
+        </select>
+      </div>
+      <button type="submit" class="btn">ذخیره تنظیمات کلی</button>
+    </form>
+  </div>
+  
+  <!-- بخش اصلی با سایدبار و پنل جزئیات -->
+  <div class="main-container">
+    <!-- سایدبار: لیست ویلیج‌ها -->
+    <div class="sidebar">
+      <h2>ویلیج‌ها</h2>
+      <div id="villageMenu">
+        <!-- آیتم‌های ویلیج به صورت داینامیک اضافه می‌شوند -->
       </div>
     </div>
-  </div>
-
-  <script>
-    // داده‌های نمونه برای ویلیج‌ها (این داده‌ها را می‌توانید از Dropbox بخوانید)
-    const villages = [
-      { id: 1, name: "ویلیج الف", coordinates: "123|456" },
-      { id: 2, name: "ویلیج ب", coordinates: "124|457" },
-      { id: 3, name: "ویلیج ج", coordinates: "125|458" },
-      { id: 4, name: "ویلیج د", coordinates: "126|459" },
-      { id: 5, name: "ویلیج ه", coordinates: "127|460" },
-      { id: 6, name: "ویلیج و", coordinates: "128|461" }
-    ];
     
-    // تابعی برای نمایش لیست ویلیج‌ها
-    function renderVillages() {
-      const villageListEl = document.getElementById("villageList");
-      villageListEl.innerHTML = ""; // پاکسازی محتوا
-      villages.forEach(village => {
-        const card = document.createElement("div");
-        card.className = "village-card";
-        card.innerHTML = `
-          <h3>${village.name}</h3>
-          <p>مختصات: ${village.coordinates}</p>
-          <button class="btn" onclick="editVillage(${village.id})">ویرایش</button>
-        `;
-        villageListEl.appendChild(card);
+    <!-- پنل جزئیات: تنظیمات ویلیج انتخاب‌شده -->
+    <div class="details-panel" id="villageDetails">
+      <h2>انتخاب یک ویلیج</h2>
+      <p>برای مشاهده تنظیمات یک ویلیج، از منوی سمت چپ ویلیج مورد نظر را انتخاب کنید.</p>
+    </div>
+  </div>
+  
+  <script>
+    // داده‌های نمونه برای ویلیج‌ها (شبیه‌سازی 2000 ویلیج)
+    const villages = [];
+    for (let i = 1; i <= 2000; i++) {
+      villages.push({
+        id: i,
+        name: `ویلیج ${i}`,
+        coordinates: `${100 + i}|${200 + i}`,
+        someSetting: `تنظیم ${i}`
       });
     }
     
-    // تابع نمونه برای ویرایش یک ویلیج
-    function editVillage(id) {
-      const village = villages.find(v => v.id === id);
-      if(village) {
-        // می‌توانید فرم ویرایش جداگانه‌ای باز کنید یا مقادیر را در یک مدال نمایش دهید
-        alert("ویرایش ویلیج: " + village.name);
-      }
+    const villageMenuEl = document.getElementById('villageMenu');
+    const villageDetailsEl = document.getElementById('villageDetails');
+    
+    // تابعی برای رندر کردن منوی ویلیج‌ها
+    function renderVillageMenu() {
+      villageMenuEl.innerHTML = '';
+      villages.forEach(village => {
+        const item = document.createElement('div');
+        item.className = 'village-item';
+        item.textContent = village.name;
+        item.onclick = () => loadVillageDetails(village.id);
+        villageMenuEl.appendChild(item);
+      });
     }
     
-    // هندلر ارسال فرم تنظیمات
-    document.getElementById("settingsForm").addEventListener("submit", function(e) {
+    // تابع برای بارگذاری تنظیمات یک ویلیج در پنل جزئیات
+    function loadVillageDetails(villageId) {
+      const village = villages.find(v => v.id === villageId);
+      if (!village) return;
+      
+      villageDetailsEl.innerHTML = `
+        <h2>تنظیمات ${village.name}</h2>
+        <form id="villageForm">
+          <div class="detail-group">
+            <label for="villageName">نام ویلیج</label>
+            <input type="text" id="villageName" name="villageName" value="${village.name}">
+          </div>
+          <div class="detail-group">
+            <label for="coordinates">مختصات</label>
+            <input type="text" id="coordinates" name="coordinates" value="${village.coordinates}">
+          </div>
+          <div class="detail-group">
+            <label for="someSetting">تنظیمات خاص</label>
+            <input type="text" id="someSetting" name="someSetting" value="${village.someSetting}">
+          </div>
+          <button type="submit" class="btn">ذخیره تغییرات</button>
+        </form>
+      `;
+      
+      // هندل فرم ویرایش ویلیج
+      document.getElementById('villageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        village.name = document.getElementById('villageName').value;
+        village.coordinates = document.getElementById('coordinates').value;
+        village.someSetting = document.getElementById('someSetting').value;
+        alert('تنظیمات ویلیج ذخیره شد!');
+        // به‌روزرسانی منوی ویلیج‌ها در صورت تغییر نام
+        renderVillageMenu();
+      });
+    }
+    
+    // هندل فرم تنظیمات کلی
+    document.getElementById('generalSettingsForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const autoclickInterval = document.getElementById("autoclickInterval").value;
-      const enableAutoClick = document.getElementById("enableAutoClick").value;
-      // در اینجا می‌توانید تنظیمات را ذخیره یا به Dropbox ارسال کنید
-      alert("تنظیمات ذخیره شد:\nزمان بین کلیک‌ها: " + autoclickInterval +
-            "\nاتوکلیکر: " + (enableAutoClick === "true" ? "فعال" : "غیرفعال"));
+      const autoclickInterval = document.getElementById('autoclickInterval').value;
+      const enableAutoClick = document.getElementById('enableAutoClick').value;
+      alert(`تنظیمات کلی ذخیره شد:
+زمان بین کلیک‌ها: ${autoclickInterval} میلی‌ثانیه
+اتوکلیکر: ${enableAutoClick === 'true' ? 'فعال' : 'غیرفعال'}`);
     });
     
-    // فراخوانی تابع برای نمایش ویلیج‌ها
-    renderVillages();
+    // رندر اولیه منوی ویلیج‌ها
+    renderVillageMenu();
   </script>
 </body>
 </html>
