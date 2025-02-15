@@ -24,7 +24,7 @@
       margin: auto;
       padding: 20px;
     }
-    /* General Settings Section (from the initial template) */
+    /* General Settings Section */
     .general-settings {
       background: #fff;
       border-radius: 5px;
@@ -127,6 +127,21 @@
     .details-panel .btn:hover {
       background: #1976D2;
     }
+    /* Responsive adjustments for mobile devices */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .sidebar {
+        width: 100%;
+        max-height: 150px; /* Reduced height for village menu */
+        overflow-y: auto;
+      }
+      .details-panel {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -135,7 +150,7 @@
   </header>
   
   <div class="container">
-    <!-- General Settings (from initial template) -->
+    <!-- General Settings -->
     <div class="general-settings">
       <h2>General Settings</h2>
       <form id="generalSettingsForm">
@@ -156,7 +171,7 @@
       </form>
     </div>
     
-    <!-- Main container with sidebar (village list) and details panel (village settings) -->
+    <!-- Main container with sidebar and details panel -->
     <div class="main-container">
       <!-- Sidebar: Village List -->
       <div class="sidebar">
