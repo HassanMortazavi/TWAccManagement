@@ -2,76 +2,192 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
+  <title>مدیریت ویلیج‌ها - Tribal Wars</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ویرایش فایل دراپ‌باکس</title>
+  <style>
+    /* تنظیمات پایه */
+    body {
+      background-color: #f5f5f5;
+      font-family: 'Tahoma', sans-serif;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    /* بخش تنظیمات */
+    .settings {
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    .settings h2 {
+      margin-top: 0;
+    }
+    .settings form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .settings .form-group {
+      flex: 1 1 200px;
+    }
+    .settings label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .settings input, .settings select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .settings .btn {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .settings .btn:hover {
+      background: #45a049;
+    }
+    /* بخش ویلیج‌ها */
+    .villages {
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .villages h2 {
+      margin-top: 0;
+    }
+    .village-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .village-card {
+      background: #fff;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex: 1 1 calc(33.333% - 20px);
+      box-sizing: border-box;
+    }
+    .village-card h3 {
+      margin-top: 0;
+    }
+    .village-card .btn {
+      margin-top: 10px;
+      background: #2196F3;
+      border: none;
+      padding: 8px 15px;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .village-card .btn:hover {
+      background: #1976D2;
+    }
+  </style>
 </head>
 <body>
-  <h2>اضافه کردن "سلام" به انتهای فایل دراپ‌باکس</h2>
-  <button onclick="appendToFile()">اضافه کن</button>
-  
-  <script>
-    const accessToken = "sl.u.AFgWG7NeLSs2ZK6DmkhIiYwwXg7iY9O9HPEJv_DmihK8RC6tHGr7cmNhC2Y2aLsJjtDzObka6jTVh25l3vPEnvrVbs6uT7Q4WbWoMJ86V76pO0UQO1_rgV9Xi2hLFZa2cR-ukijGQNVpG_8ULtAP44PgnpkxzICZxy9s4NGboYz9eCTMcbvaD57ZkO63rtZqjCdgDS-zDeyhy8vA-hgoTgvFR8oFtJUETm7HF3LMOLs3Qg5Pzv7H8mBMUUZzvjYJb-N1QmCcgzc41NnHO8xO-BVpF951IpW3IKWzp2CV187sjbbzj9w2FBRgCb9a8ZCNCyzt-pzRa_s3Xl35qCzKUUw0Z14K6jQ4zd39ptCD5PLAaj1538MY1qKJaepIL2Mym5EBtNRqBXFC05foX1VA4f4IIPrZL_LVURIMhs38O7cQeGKQRowHTUOg5v9jvEw1nVCKo4NQJ5A51QKgj2iR1RrVii2LS7JM2u3Vrd2mdXaBY-tP2z-F4l24j71J6ZU2pHvNMMNZxTUdVymgzlmkrB6aSs_LIPUla79-zJukUyPf_MUbtNCYJJ5Im_b1ES-Z5FtKEI-ebrNtFKtSkizcbxCAdZ3jJMr0GzxooC1BrM8jnuzyOxgPamTxkxAeZqRN6TPdw5pQZZG043jsGcslxmmr3vq0PEii1p8vQjM_bn3X1lIJnwt1QLyLhz4I9JE_cSld-cPMPMkWM_QLetjHQu6rpuacT-Gub8d7H-6JKlRakCUOdxduAB9ZD-M8wtK9gtFzb13HvRA46lT6HZtTZwidSmiE9syn_AWgytgOSJnEUViFjsnJ0sS9KhOqNyX84VRNrIJy4e7CQ0jE0BudIueoXuN83NQplGs41GcEx2bmkZ5Z-qukPoyqJUR2MN5numyaojMJSWQKXxGouUuWzluz2Bx3oTVx4vuJPamEFPIKZsQTibqT6AbQcSu5Sxc9hkIEMgxQeTN6Dzu6KTpvXc22pDwS4LMUOK7hw3lQ0DqxFPElxyMbwj72CIsbZ847vne7D6AYWEJtpYTrpbyrULhGWSr4TQx9AxDaSJL6uJpqPEgHGeqHNsaaQ8HbtXfusrlYaYG_n34uDCV1WzWTz2b-EJPEMtiRjigFr4z5y57R8dSyVGSWX7aVMQJGayqw875bSMVTzEh2Rn14xS_qEk8Z2vSO3H-_NfkznqMblgor5AsXfJbV644G2i8H1GtqVfLMtZTjiVYAsVAR5bsTVfKfp1qYxXCBj8JITdfWqPpsYEl6fxMwSA_a_gs9wokoX247fvcSBzSOjKK1bmmL38m7vMYC3kywt6XtVa0E4NRC5qwBzjyOiv_lk5Paccc5YVzhnV2kb3WXN_ccarjNGcCdTyaAL8FeAG1xQmJilT8r3nVqYwuGmMd_LTgU5lKNkAegpb9NBr9sbWv1NZYBb07WTvgPK6COccV0SiJB8CSHqA";  // توکن دراپ‌باکس
-    const filePath = "/test.js";  // مسیر فایل در Dropbox
+  <header>
+    <h1>مدیریت ویلیج‌ها - Tribal Wars</h1>
+  </header>
+  <div class="container">
+    <!-- بخش تنظیمات -->
+    <div class="settings">
+      <h2>تنظیمات</h2>
+      <form id="settingsForm">
+        <div class="form-group">
+          <label for="autoclickInterval">زمان بین کلیک‌ها (میلی‌ثانیه)</label>
+          <input type="number" id="autoclickInterval" name="autoclickInterval" value="1000">
+        </div>
+        <div class="form-group">
+          <label for="enableAutoClick">فعال کردن اتوکلیکر</label>
+          <select id="enableAutoClick" name="enableAutoClick">
+            <option value="true">بله</option>
+            <option value="false">خیر</option>
+          </select>
+        </div>
+        <!-- می‌توانید فیلدهای بیشتری اضافه کنید -->
+        <div class="form-group" style="flex-basis: 100%;">
+          <button type="submit" class="btn">ذخیره تنظیمات</button>
+        </div>
+      </form>
+    </div>
 
-    async function appendToFile() {
-      let currentContent = "";
-      
-      // ۱. تلاش برای خواندن محتوای فعلی فایل
-      try {
-        const getFileUrl = "https://content.dropboxapi.com/2/files/download";
-        const getFileResponse = await fetch(getFileUrl, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${accessToken}`,
-            "Dropbox-API-Arg": JSON.stringify({ "path": filePath })
-          }
-        });
-        
-        if (getFileResponse.ok) {
-          currentContent = await getFileResponse.text();
-        } else {
-          const errorText = await getFileResponse.text();
-          // اگر فایل وجود نداشته باشد، Dropbox معمولا خطای "path/not_found" می‌دهد
-          if (errorText.indexOf("path/not_found") !== -1) {
-            currentContent = "";
-          } else {
-            throw new Error("خطا در خواندن فایل: " + errorText);
-          }
-        }
-      } catch (error) {
-        alert("❌ خطا در خواندن فایل: " + error.message);
-        return;
-      }
-      
-      // ۲. اضافه کردن متن "سلام" به انتهای محتوا
-      const newContent = currentContent + "\nسلام";
-      // تبدیل رشته به باینری
-      const encodedContent = new TextEncoder().encode(newContent);
-      
-      // ۳. آپلود (یا ایجاد) فایل با محتوای جدید
-      try {
-        const uploadUrl = "https://content.dropboxapi.com/2/files/upload";
-        const uploadResponse = await fetch(uploadUrl, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${accessToken}`,
-            "Dropbox-API-Arg": JSON.stringify({
-              "path": filePath,
-              "mode": "overwrite"
-            }),
-            "Content-Type": "application/octet-stream"
-          },
-          body: encodedContent
-        });
-        
-        if (!uploadResponse.ok) {
-          throw new Error("خطا در ذخیره فایل: " + await uploadResponse.text());
-        }
-        alert("✅ متن 'سلام' به فایل اضافه شد!");
-      } catch (error) {
-        alert("❌ خطا در ذخیره فایل: " + error.message);
+    <!-- بخش ویلیج‌ها -->
+    <div class="villages">
+      <h2>لیست ویلیج‌ها</h2>
+      <div class="village-list" id="villageList">
+        <!-- کارت‌های ویلیج اینجا قرار می‌گیرند -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // داده‌های نمونه برای ویلیج‌ها (این داده‌ها را می‌توانید از Dropbox بخوانید)
+    const villages = [
+      { id: 1, name: "ویلیج الف", coordinates: "123|456" },
+      { id: 2, name: "ویلیج ب", coordinates: "124|457" },
+      { id: 3, name: "ویلیج ج", coordinates: "125|458" },
+      { id: 4, name: "ویلیج د", coordinates: "126|459" },
+      { id: 5, name: "ویلیج ه", coordinates: "127|460" },
+      { id: 6, name: "ویلیج و", coordinates: "128|461" }
+    ];
+    
+    // تابعی برای نمایش لیست ویلیج‌ها
+    function renderVillages() {
+      const villageListEl = document.getElementById("villageList");
+      villageListEl.innerHTML = ""; // پاکسازی محتوا
+      villages.forEach(village => {
+        const card = document.createElement("div");
+        card.className = "village-card";
+        card.innerHTML = `
+          <h3>${village.name}</h3>
+          <p>مختصات: ${village.coordinates}</p>
+          <button class="btn" onclick="editVillage(${village.id})">ویرایش</button>
+        `;
+        villageListEl.appendChild(card);
+      });
+    }
+    
+    // تابع نمونه برای ویرایش یک ویلیج
+    function editVillage(id) {
+      const village = villages.find(v => v.id === id);
+      if(village) {
+        // می‌توانید فرم ویرایش جداگانه‌ای باز کنید یا مقادیر را در یک مدال نمایش دهید
+        alert("ویرایش ویلیج: " + village.name);
       }
     }
+    
+    // هندلر ارسال فرم تنظیمات
+    document.getElementById("settingsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const autoclickInterval = document.getElementById("autoclickInterval").value;
+      const enableAutoClick = document.getElementById("enableAutoClick").value;
+      // در اینجا می‌توانید تنظیمات را ذخیره یا به Dropbox ارسال کنید
+      alert("تنظیمات ذخیره شد:\nزمان بین کلیک‌ها: " + autoclickInterval +
+            "\nاتوکلیکر: " + (enableAutoClick === "true" ? "فعال" : "غیرفعال"));
+    });
+    
+    // فراخوانی تابع برای نمایش ویلیج‌ها
+    renderVillages();
   </script>
 </body>
 </html>
