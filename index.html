@@ -262,10 +262,10 @@
       <form id="commandForm">
         <div class="form-group">
           <label for="sourceVillage">Source Village</label>
-          <!-- Input با datalist جهت پیشنهاد ویلیج‌ها -->
+          <!-- Input with datalist for village suggestions -->
           <input type="text" id="sourceVillage" name="sourceVillage" list="villageOptions" placeholder="e.g., 0001 Noble">
           <datalist id="villageOptions">
-            <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
+            <!-- Village options will be dynamically added -->
           </datalist>
         </div>
         <div class="form-group">
@@ -275,4 +275,27 @@
         <div class="form-group">
           <label for="commandDateTime">Command Date & Time</label>
           <input type="datetime-local" id="commandDateTime" name="commandDateTime">
-        </div
+        </div>
+        <div class="form-group" style="flex-basis: 100%;">
+          <button type="submit" class="btn">Schedule Command</button>
+        </div>
+      </form>
+
+      <!-- Table for displaying scheduled commands -->
+      <table id="commandTable">
+        <thead>
+          <tr>
+            <th>Source Village</th>
+            <th>Target Coordinates</th>
+            <th>Command Date & Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Scheduled commands will be added here dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
