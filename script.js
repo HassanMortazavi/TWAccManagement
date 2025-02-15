@@ -1,5 +1,86 @@
 // --- Village Data ---
-    const villages = [];
+var player_id = 11403285;
+var VILLAGE_TIME = 'mapVillageTime'; 
+var VILLAGES_LIST = 'mapVillagesList'; 
+var TIME_INTERVAL = 60 * 60 * 1000; /*refresh map every 1 hour*/
+var villages = [];
+var barbarians = [];
+var my_villages = [];
+
+function fetchVillagesData() {
+    $.get('https://en145.tribalwars.net/map/village.txt', function (data) {
+        villages = CSVToArray(data);
+        localStorage.setItem(VILLAGE_TIME, Date.parse(new Date()));
+        localStorage.setItem(VILLAGES_LIST, data);
+    })
+        .done(function () {
+            findOwnandBarbarianVillages();
+        })
+        .fail(function (error) {
+            console.error(`${scriptInfo()} Error:`, error);
+        });
+}
+
+function findOwnandBarbarianVillages() {
+    villages.forEach((village) => {
+        if (village[4] == '0') {
+            barbarians.push(village);
+        }else if (village[4] == player_id){
+			my_villages.push(village);
+		}
+    });
+}
+
+function CSVToArray(strData, strDelimiter) {
+    strDelimiter = strDelimiter || ',';
+    var objPattern = new RegExp(
+        '(\\' +
+            strDelimiter +
+            '|\\r?\\n|\\r|^)' +
+            '(?:"([^"]*(?:""[^"]*)*)"|' +
+            '([^"\\' +
+            strDelimiter +
+            '\\r\\n]*))',
+        'gi'
+    );
+    var arrData = [[]];
+    var arrMatches = null;
+    while ((arrMatches = objPattern.exec(strData))) {
+        var strMatchedDelimiter = arrMatches[1];
+        if (
+            strMatchedDelimiter.length &&
+            strMatchedDelimiter !== strDelimiter
+        ) {
+            arrData.push([]);
+        }
+        var strMatchedValue;
+
+        if (arrMatches[2]) {
+            strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
+        } else {
+            strMatchedValue = arrMatches[3];
+        }
+        arrData[arrData.length - 1].push(strMatchedValue);
+    }
+    return arrData;
+}
+
+function checkMap(){
+	if (localStorage.getItem(VILLAGES_LIST) != null) {
+		var mapVillageTime = parseInt(localStorage.getItem(VILLAGE_TIME));
+		var data = localStorage.getItem(VILLAGES_LIST);
+		villages = CSVToArray(data);
+		findOwnandBarbarianVillages();
+		if (Date.parse(new Date()) >= mapVillageTime + TIME_INTERVAL) {
+			/* hour has passed, refetch village.txt*/
+			fetchVillagesData();
+		} 
+	} else {
+		fetchVillagesData();
+	}
+}
+
+    
     for (let i = 1; i <= 2000; i++) {
       const villageNumber = i.toString().padStart(4, '0');
       villages.push({
