@@ -48,7 +48,7 @@ function checkMap() {
         fetchVillagesData();
     }
 }
-alert("این یک پیام پاپ‌آپ است!");
+document.body.innerHTML = '<div>این یک پیام دیباگ است</div>';
 // Populate datalist for Source Village in Command Form
 function populateVillageOptions() {
     const datalist = document.getElementById("villageOptions");
