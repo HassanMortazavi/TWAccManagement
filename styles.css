@@ -144,7 +144,7 @@
     }
     /* Scrollable village menu container */
     .village-menu {
-      max-height: 400px; /* حدود نمایش تقریبی 10 آیتم */
+      max-height: 200px; /* حدود نمایش تقریبی 5آیتم */
       overflow-y: auto;
     }
     .village-item {
