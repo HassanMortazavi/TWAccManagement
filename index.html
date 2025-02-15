@@ -23,7 +23,6 @@
       margin: auto;
       padding: 20px;
     }
-    /* General Settings Section */
     .general-settings {
       background: #fff;
       border-radius: 5px;
@@ -67,7 +66,6 @@
     .general-settings .btn:hover {
       background: #45a049;
     }
-    /* Scheduled Commands Section */
     .command-list {
       background: #fff;
       border-radius: 5px;
@@ -122,13 +120,11 @@
       padding: 8px;
       text-align: center;
     }
-    /* Main container: Sidebar and Details Panel (Village Management) */
     .main-container {
       display: flex;
-      height: calc(100vh - 500px); /* تنظیم شده با توجه به ارتفاع سایر بخش‌ها */
+      height: calc(100vh - 500px);
       gap: 10px;
     }
-    /* Sidebar for Village List */
     .sidebar {
       width: 250px;
       background: #fff;
@@ -140,7 +136,6 @@
       text-align: center;
       margin-top: 0;
     }
-    /* Search box in sidebar */
     #villageSearch {
       width: 100%;
       padding: 8px;
@@ -149,9 +144,8 @@
       border: 1px solid #ddd;
       border-radius: 4px;
     }
-    /* Scrollable village menu container */
     .village-menu {
-      max-height: 200px; /* حدود نمایش تقریبی 5آیتم */
+      max-height: 200px;
       overflow-y: auto;
     }
     .village-item {
@@ -162,7 +156,6 @@
     .village-item:hover {
       background-color: #f1f1f1;
     }
-    /* Details Panel for Selected Village */
     .details-panel {
       flex: 1;
       background: #fff;
@@ -198,7 +191,6 @@
     .details-panel .btn:hover {
       background: #1976D2;
     }
-    /* Responsive adjustments for mobile devices */
     @media (max-width: 768px) {
       .main-container {
         flex-direction: column;
@@ -218,20 +210,17 @@
 
   <div class="container">
     <div class="main-container">
-      <!-- Sidebar -->
       <div class="sidebar">
         <h2>Village List</h2>
         <input type="text" id="villageSearch" placeholder="Search Villages...">
         <div class="village-menu" id="villageMenu"></div>
       </div>
       
-      <!-- Details Panel -->
       <div class="details-panel" id="villageDetails">
         <h2>Select a Village</h2>
       </div>
     </div>
 
-    <!-- Scheduled Commands Section -->
     <div class="command-list">
       <h2>Scheduled Commands</h2>
       <form id="commandForm">
@@ -284,7 +273,6 @@
   </div>
 
   <script>
-    // --- Village Data ---
     const villages = [];
     for (let i = 1; i <= 2000; i++) {
       const villageNumber = i.toString().padStart(4, '0');
@@ -298,7 +286,6 @@
 
     let filteredVillages = [...villages];
 
-    // --- Village Menu Rendering ---
     function renderVillageMenu(villages) {
       const villageMenu = document.getElementById('villageMenu');
       villageMenu.innerHTML = '';
@@ -311,7 +298,6 @@
       });
     }
 
-    // --- Village Details ---
     function loadVillageDetails(villageId) {
       const village = villages.find(v => v.id === villageId);
       if (!village) return;
@@ -346,7 +332,6 @@
       loadVillageDetails(village.id);
     }
 
-    // --- Command Scheduling ---
     document.getElementById('commandForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
