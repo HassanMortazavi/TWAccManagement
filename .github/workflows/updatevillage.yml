@@ -11,7 +11,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # این مرحله ریپو را چک‌اوت می‌کند
+        uses: actions/checkout@v2
+        with:
+           token: ${{ secrets.GH_TOKEN }}
 
       - name: Download village.txt
         run: curl -o village.txt https://en145.tribalwars.net/map/village.txt  # دانلود فایل village.txt
