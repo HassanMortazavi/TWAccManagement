@@ -8,7 +8,7 @@ var barbarians = [];
 var my_villages = [];
 
 function fetchVillagesData() {
-    $.get('https://api.allorigins.win/raw?url=https://en145.tribalwars.net/map/village.txt', function (data) {
+    $.get('./village.txt', function (data) {
         localStorage.setItem(VILLAGE_TIME, Date.now());
         localStorage.setItem(VILLAGES_LIST, data);
         processVillagesData(data);
