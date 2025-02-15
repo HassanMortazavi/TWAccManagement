@@ -244,10 +244,10 @@
       <form id="commandForm">
         <div class="form-group">
           <label for="sourceVillage">Source Village</label>
-          <!-- استفاده از datalist برای انتخاب ویلیج؛ در صورت نیاز می‌توان این لیست را بهینه کرد -->
+          <!-- Input با datalist جهت پیشنهاد ویلیج‌ها -->
           <input type="text" id="sourceVillage" name="sourceVillage" list="villageOptions" placeholder="e.g., 0001 Noble">
           <datalist id="villageOptions">
-            <!-- گزینه‌ها به صورت داینامیک پر می‌شوند -->
+            <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
           </datalist>
         </div>
         <div class="form-group">
@@ -257,6 +257,10 @@
         <div class="form-group">
           <label for="commandDateTime">Command Date & Time</label>
           <input type="datetime-local" id="commandDateTime" name="commandDateTime">
+        </div>
+        <div class="form-group">
+          <label for="commandMilliseconds">Milliseconds</label>
+          <input type="number" id="commandMilliseconds" name="commandMilliseconds" placeholder="0">
         </div>
         <div class="form-group">
           <label for="commandType">Command Type</label>
@@ -285,7 +289,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- دستورات افزوده شده در اینجا نمایش داده می‌شوند -->
+          <!-- Commands will appear here -->
         </tbody>
       </table>
     </div>
@@ -336,7 +340,6 @@
     
     // --- Village Manager Section ---
     let filteredVillages = villages.slice(); // Start with full list
-    
     const villageMenuEl = document.getElementById('villageMenu');
     const villageDetailsEl = document.getElementById('villageDetails');
     const villageSearchInput = document.getElementById('villageSearch');
@@ -404,14 +407,18 @@
       const sourceVillage = document.getElementById("sourceVillage").value;
       const targetCoordinates = document.getElementById("targetCoordinates").value;
       const commandDateTime = document.getElementById("commandDateTime").value;
+      const commandMilliseconds = document.getElementById("commandMilliseconds").value || "0";
       const commandType = document.getElementById("commandType").value;
       const unitCount = document.getElementById("unitCount").value;
+      
+      // ترکیب زمان تاریخ و میلی ثانیه به صورت یک رشته
+      const fullDateTime = commandDateTime + "." + commandMilliseconds;
       
       const command = {
         id: Date.now(),
         sourceVillage,
         targetCoordinates,
-        commandDateTime,
+        commandDateTime: fullDateTime,
         commandType,
         unitCount
       };
