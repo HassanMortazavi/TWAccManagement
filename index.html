@@ -1,10 +1,215 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Village Manager - Tribal Wars</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      direction: ltr;
+      background-color: #f5f5f5;
+    }
+    header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    /* General Settings Section */
+    .general-settings {
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    .general-settings h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+    .general-settings form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .general-settings .form-group {
+      flex: 1 1 200px;
+    }
+    .general-settings label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .general-settings input, 
+    .general-settings select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .general-settings .btn {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto 0 auto;
+    }
+    .general-settings .btn:hover {
+      background: #45a049;
+    }
+    /* Scheduled Commands Section */
+    .command-list {
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    .command-list h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    .command-list form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .command-list .form-group {
+      flex: 1 1 200px;
+    }
+    .command-list label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .command-list input, 
+    .command-list select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .command-list .btn {
+      background: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto 0;
+    }
+    .command-list .btn:hover {
+      background: #1976D2;
+    }
+    .command-list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .command-list th, 
+    .command-list td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    /* Main container: Sidebar and Details Panel (Village Management) */
+    .main-container {
+      display: flex;
+      height: calc(100vh - 500px); /* تنظیم شده با توجه به ارتفاع سایر بخش‌ها */
+      gap: 10px;
+    }
+    /* Sidebar for Village List */
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 10px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    /* Search box in sidebar */
+    #villageSearch {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    /* Scrollable village menu container */
+    .village-menu {
+      max-height: 400px; /* حدود نمایش تقریبی 10 آیتم */
+      overflow-y: auto;
+    }
+    .village-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .village-item:hover {
+      background-color: #f1f1f1;
+    }
+    /* Details Panel for Selected Village */
+    .details-panel {
+      flex: 1;
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+    .details-panel h2 {
+      margin-top: 0;
+    }
+    .details-panel .detail-group {
+      margin-bottom: 15px;
+    }
+    .details-panel label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .details-panel input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .details-panel .btn {
+      background: #2196F3;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .details-panel .btn:hover {
+      background: #1976D2;
+    }
+    /* Responsive adjustments for mobile devices */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .sidebar, .details-panel {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -39,6 +244,7 @@
       <form id="commandForm">
         <div class="form-group">
           <label for="sourceVillage">Source Village</label>
+          <!-- Input با datalist جهت پیشنهاد ویلیج‌ها -->
           <input type="text" id="sourceVillage" name="sourceVillage" list="villageOptions" placeholder="e.g., 0001 Noble">
           <datalist id="villageOptions">
             <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
@@ -90,6 +296,7 @@
     
     <!-- Main container with sidebar and details panel (Village Management) -->
     <div class="main-container">
+      <!-- Sidebar: Village List with Search Box -->
       <div class="sidebar">
         <h2>Villages</h2>
         <input type="text" id="villageSearch" placeholder="Search Village...">
@@ -98,6 +305,7 @@
         </div>
       </div>
       
+      <!-- Details Panel: Selected Village Settings -->
       <div class="details-panel" id="villageDetails">
         <h2>Select a Village</h2>
         <p>Click on a village from the left menu to view and edit its settings.</p>
@@ -105,6 +313,141 @@
     </div>
   </div>
   
-  <script src="script.js"></script>
+  <script>
+    // --- Village Data ---
+    const villages = [];
+    for (let i = 1; i <= 2000; i++) {
+      const villageNumber = i.toString().padStart(4, '0');
+      villages.push({
+        id: i,
+        name: `${villageNumber} Noble`,
+        coordinates: `${525 + i % 100}|${675 + i % 100}`,
+        someSetting: `Setting ${i}`
+      });
+    }
+    
+    // Populate datalist for Source Village in Command Form
+    function populateVillageOptions() {
+      const datalist = document.getElementById("villageOptions");
+      datalist.innerHTML = "";
+      villages.forEach(village => {
+        const option = document.createElement("option");
+        option.value = village.name;
+        datalist.appendChild(option);
+      });
+    }
+    populateVillageOptions();
+    
+    // --- Village Manager Section ---
+    let filteredVillages = villages.slice(); // Start with full list
+    const villageMenuEl = document.getElementById('villageMenu');
+    const villageDetailsEl = document.getElementById('villageDetails');
+    const villageSearchInput = document.getElementById('villageSearch');
+    
+    function renderVillageMenu(list) {
+      villageMenuEl.innerHTML = '';
+      list.forEach(village => {
+        const item = document.createElement('div');
+        item.className = 'village-item';
+        // نمایش نام ویلیج به همراه مختصات در پرانتز
+        item.textContent = `${village.name} (${village.coordinates})`;
+        item.onclick = () => loadVillageDetails(village.id);
+        villageMenuEl.appendChild(item);
+      });
+    }
+    
+    function loadVillageDetails(villageId) {
+      const village = villages.find(v => v.id === villageId);
+      if (!village) return;
+      
+      villageDetailsEl.innerHTML = `
+        <h2>${village.name} Settings</h2>
+        <form id="villageForm">
+          <div class="detail-group">
+            <label for="villageName">Village Name</label>
+            <input type="text" id="villageName" name="villageName" value="${village.name}">
+          </div>
+          <div class="detail-group">
+            <label for="coordinates">Coordinates</label>
+            <input type="text" id="coordinates" name="coordinates" value="${village.coordinates}">
+          </div>
+          <div class="detail-group">
+            <label for="someSetting">Specific Setting</label>
+            <input type="text" id="someSetting" name="someSetting" value="${village.someSetting}">
+          </div>
+          <button type="submit" class="btn">Save Changes</button>
+        </form>
+      `;
+      
+      document.getElementById('villageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        village.name = document.getElementById('villageName').value;
+        village.coordinates = document.getElementById('coordinates').value;
+        village.someSetting = document.getElementById('someSetting').value;
+        alert('Village settings saved!');
+        renderVillageMenu(filteredVillages);
+      });
+    }
+    
+    villageSearchInput.addEventListener('input', function() {
+      const query = villageSearchInput.value.trim().toLowerCase();
+      filteredVillages = villages.filter(village => village.name.toLowerCase().includes(query));
+      renderVillageMenu(filteredVillages);
+    });
+    
+    renderVillageMenu(filteredVillages);
+    
+    // --- Scheduled Commands Section ---
+    let commands = [];
+    const commandForm = document.getElementById("commandForm");
+    const commandTableBody = document.querySelector("#commandTable tbody");
+    
+    commandForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const sourceVillage = document.getElementById("sourceVillage").value;
+      const targetCoordinates = document.getElementById("targetCoordinates").value;
+      const commandDateTime = document.getElementById("commandDateTime").value;
+      const commandMilliseconds = document.getElementById("commandMilliseconds").value || "0";
+      const commandType = document.getElementById("commandType").value;
+      const unitCount = document.getElementById("unitCount").value;
+      
+      // ترکیب زمان تاریخ و میلی ثانیه به صورت یک رشته
+      const fullDateTime = commandDateTime + "." + commandMilliseconds;
+      
+      const command = {
+        id: Date.now(),
+        sourceVillage,
+        targetCoordinates,
+        commandDateTime: fullDateTime,
+        commandType,
+        unitCount
+      };
+      
+      commands.push(command);
+      renderCommandTable();
+      commandForm.reset();
+    });
+    
+    function renderCommandTable() {
+      commandTableBody.innerHTML = "";
+      commands.forEach(cmd => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${cmd.sourceVillage}</td>
+          <td>${cmd.targetCoordinates}</td>
+          <td>${cmd.commandDateTime}</td>
+          <td>${cmd.commandType}</td>
+          <td>${cmd.unitCount}</td>
+          <td><button onclick="deleteCommand(${cmd.id})" class="btn">Delete</button></td>
+        `;
+        commandTableBody.appendChild(tr);
+      });
+    }
+    
+    function deleteCommand(id) {
+      commands = commands.filter(cmd => cmd.id !== id);
+      renderCommandTable();
+    }
+  </script>
 </body>
 </html>
