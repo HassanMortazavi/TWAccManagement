@@ -1,0 +1,27 @@
+name: Update Village Data
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # اجرای هر ساعت یک‌بار
+  workflow_dispatch:  # این امکان را می‌دهد که به‌صورت دستی هم اکشن را اجرا کنی
+
+jobs:
+  update-village-data:
+    runs-on: ubuntu-latest  # نوع ماشین برای اجرای اکشن
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # این مرحله ریپو را چک‌اوت می‌کند
+
+      - name: Download village.txt
+        run: curl -o village.txt https://en145.tribalwars.net/map/village.txt  # دانلود فایل village.txt
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name "HassanMortazavi"  # نام کاربری
+          git config --global user.email "your-email@example.com"  # ایمیل برای تغییرات
+          git add village.txt  # فایل جدید را به stage اضافه می‌کند
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update village.txt"  # اگر تغییراتی هست، commit می‌کند
+          git push  # تغییرات را push می‌کند
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # استفاده از توکن برای احراز هویت
