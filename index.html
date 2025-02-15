@@ -33,7 +33,29 @@
       </form>
     </div>
     
-    <!-- Scheduled Commands Section -->
+    
+    
+    <!-- Main container with sidebar and details panel (Village Management) -->
+    <div class="main-container">
+      <!-- Sidebar: Village List with Search Box -->
+      <div class="sidebar">
+        <h2>Villages</h2>
+        <input type="text" id="villageSearch" placeholder="Search Village...">
+        <div id="villageMenu" class="village-menu">
+          <!-- Village items will be added dynamically -->
+        </div>
+      </div>
+      
+      <!-- Details Panel: Selected Village Settings -->
+      <div class="details-panel" id="villageDetails">
+        <h2>Select a Village</h2>
+        <p>Click on a village from the left menu to view and edit its settings.</p>
+      </div>
+    </div>
+  
+  
+  
+  <!-- Scheduled Commands Section -->
     <div class="command-list">
       <h2>Scheduled Commands</h2>
       <form id="commandForm">
@@ -88,25 +110,8 @@
         </tbody>
       </table>
     </div>
-    
-    <!-- Main container with sidebar and details panel (Village Management) -->
-    <div class="main-container">
-      <!-- Sidebar: Village List with Search Box -->
-      <div class="sidebar">
-        <h2>Villages</h2>
-        <input type="text" id="villageSearch" placeholder="Search Village...">
-        <div id="villageMenu" class="village-menu">
-          <!-- Village items will be added dynamically -->
-        </div>
-      </div>
-      
-      <!-- Details Panel: Selected Village Settings -->
-      <div class="details-panel" id="villageDetails">
-        <h2>Select a Village</h2>
-        <p>Click on a village from the left menu to view and edit its settings.</p>
-      </div>
-    </div>
   </div>
+  
   
   <script>
     // --- Village Data ---
