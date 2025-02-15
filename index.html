@@ -217,24 +217,6 @@
   </header>
   
   <div class="container">
-    <!-- Main container with sidebar and details panel (Village Management) -->
-    <div class="main-container">
-      <!-- Sidebar: Village List with Search Box -->
-      <div class="sidebar">
-        <h2>Villages</h2>
-        <input type="text" id="villageSearch" placeholder="Search Village...">
-        <div id="villageMenu" class="village-menu">
-          <!-- Village items will be added dynamically -->
-        </div>
-      </div>
-      
-      <!-- Details Panel: Selected Village Settings -->
-      <div class="details-panel" id="villageDetails">
-        <h2>Select a Village</h2>
-        <p>Click on a village from the left menu to view and edit its settings.</p>
-      </div>
-    </div>
-    
     <!-- General Settings -->
     <div class="general-settings">
       <h2>General Settings</h2>
@@ -255,17 +237,15 @@
         </div>
       </form>
     </div>
-
+    
     <!-- Scheduled Commands Section -->
     <div class="command-list">
       <h2>Scheduled Commands</h2>
       <form id="commandForm">
         <div class="form-group">
           <label for="sourceVillage">Source Village</label>
-          <!-- Input with datalist for village suggestions -->
           <input type="text" id="sourceVillage" name="sourceVillage" list="villageOptions" placeholder="e.g., 0001 Noble">
           <datalist id="villageOptions">
-            <!-- Village options will be dynamically added -->
           </datalist>
         </div>
         <div class="form-group">
@@ -276,26 +256,154 @@
           <label for="commandDateTime">Command Date & Time</label>
           <input type="datetime-local" id="commandDateTime" name="commandDateTime">
         </div>
-        <div class="form-group" style="flex-basis: 100%;">
-          <button type="submit" class="btn">Schedule Command</button>
+        <div class="form-group">
+          <label for="commandMilliseconds">Milliseconds</label>
+          <input type="number" id="commandMilliseconds" name="commandMilliseconds" placeholder="0">
         </div>
+        <div class="form-group">
+          <label for="commandType">Command Type</label>
+          <select id="commandType" name="commandType">
+            <option value="attack">Attack</option>
+            <option value="support">Support</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="unitCount">Units</label>
+          <input type="number" id="unitCount" name="unitCount" placeholder="Number of units">
+        </div>
+        <button type="submit" class="btn">Schedule Command</button>
       </form>
 
-      <!-- Table for displaying scheduled commands -->
-      <table id="commandTable">
+      <table>
         <thead>
           <tr>
             <th>Source Village</th>
             <th>Target Coordinates</th>
-            <th>Command Date & Time</th>
+            <th>Date & Time</th>
+            <th>Command Type</th>
+            <th>Units</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Scheduled commands will be added here dynamically -->
+        <tbody id="commandTableBody">
+          <!-- Scheduled commands will appear here -->
         </tbody>
       </table>
     </div>
+
+    <!-- Village List and Details Panel -->
+    <div class="main-container">
+      <!-- Sidebar (Village List) -->
+      <div class="sidebar">
+        <input type="text" id="villageSearch" placeholder="Search Village">
+        <div class="village-menu" id="villageMenu">
+          <!-- Dynamic list of villages will appear here -->
+        </div>
+      </div>
+
+      <!-- Details Panel (Selected Village) -->
+      <div class="details-panel" id="detailsPanel">
+        <h2>Village Details</h2>
+        <div class="detail-group">
+          <label for="villageName">Village Name</label>
+          <input type="text" id="villageName" placeholder="Village Name">
+        </div>
+        <div class="detail-group">
+          <label for="villageCoord">Coordinates</label>
+          <input type="text" id="villageCoord" placeholder="Coordinates">
+        </div>
+        <div class="detail-group">
+          <label for="villageUnits">Units in Village</label>
+          <input type="text" id="villageUnits" placeholder="Units count">
+        </div>
+        <button class="btn">Save Village Details</button>
+      </div>
+    </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const villageMenu = document.getElementById('villageMenu');
+      const commandTableBody = document.getElementById('commandTableBody');
+      const commandForm = document.getElementById('commandForm');
+      const villageSearch = document.getElementById('villageSearch');
+      const villageList = [];
+      const commands = [];
+
+      // Function to update the village menu
+      function updateVillageMenu() {
+        villageMenu.innerHTML = '';
+        villageList.forEach(function (village) {
+          const div = document.createElement('div');
+          div.classList.add('village-item');
+          div.textContent = village.name;
+          div.addEventListener('click', function () {
+            selectVillage(village);
+          });
+          villageMenu.appendChild(div);
+        });
+      }
+
+      // Function to select a village from the menu
+      function selectVillage(village) {
+        document.getElementById('villageName').value = village.name;
+        document.getElementById('villageCoord').value = village.coordinates;
+        document.getElementById('villageUnits').value = village.units;
+      }
+
+      // Function to add a scheduled command
+      commandForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const command = {
+          sourceVillage: document.getElementById('sourceVillage').value,
+          targetCoordinates: document.getElementById('targetCoordinates').value,
+          commandDateTime: document.getElementById('commandDateTime').value,
+          commandMilliseconds: document.getElementById('commandMilliseconds').value,
+          commandType: document.getElementById('commandType').value,
+          unitCount: document.getElementById('unitCount').value
+        };
+        commands.push(command);
+        renderCommands();
+        commandForm.reset();
+      });
+
+      // Function to render the command table
+      function renderCommands() {
+        commandTableBody.innerHTML = '';
+        commands.forEach(function (command, index) {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${command.sourceVillage}</td>
+            <td>${command.targetCoordinates}</td>
+            <td>${command.commandDateTime}</td>
+            <td>${command.commandType}</td>
+            <td>${command.unitCount}</td>
+            <td><button class="btn delete-btn" onclick="deleteCommand(${index})">Delete</button></td>
+          `;
+          commandTableBody.appendChild(row);
+        });
+      }
+
+      // Function to delete a command
+      window.deleteCommand = function (index) {
+        commands.splice(index, 1);
+        renderCommands();
+      };
+
+      // Function to filter the village list
+      villageSearch.addEventListener('input', function () {
+        const searchQuery = villageSearch.value.toLowerCase();
+        const filteredVillages = villageList.filter(function (village) {
+          return village.name.toLowerCase().includes(searchQuery);
+        });
+        updateVillageMenu(filteredVillages);
+      });
+
+      // Adding some sample villages
+      villageList.push({ name: '0001 Noble', coordinates: '525|675', units: '50' });
+      villageList.push({ name: '0002 Noble', coordinates: '535|685', units: '70' });
+      updateVillageMenu();
+    });
+  </script>
 </body>
 </html>
