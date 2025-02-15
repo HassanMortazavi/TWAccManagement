@@ -1,1 +1,116 @@
-a
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+header {
+  text-align: center;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.general-settings, .command-list, .main-container {
+  width: 32%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.command-list {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.village-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #e4e4e4;
+  cursor: pointer;
+}
+
+.village-item:hover {
+  background-color: #ddd;
+}
+
+.details-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-panel form {
+  width: 80%;
+}
+
+#villageSearch {
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .general-settings, .command-list, .main-container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
