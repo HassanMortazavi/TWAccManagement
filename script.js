@@ -8,7 +8,6 @@ var barbarians = [];
 var my_villages = [];
 
 function fetchVillagesData() {
-    alert("fetchVi");
     $.get('./village.txt', function (data) {
         localStorage.setItem(VILLAGE_TIME, Date.now());
         localStorage.setItem(VILLAGES_LIST, data);
