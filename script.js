@@ -72,7 +72,7 @@ function renderVillageMenu(list) {
     list.forEach(village => {
         const item = document.createElement('div');
         item.className = 'village-item';
-        item.textContent = `${village[1]} (${village[2]})`;
+        item.textContent = `${village[1]} (${village[2]}|${village[3]})`;
         item.onclick = () => loadVillageDetails(village[0]);
         villageMenuEl.appendChild(item);
     });
