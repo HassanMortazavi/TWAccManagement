@@ -44,8 +44,10 @@ function checkMap() {
     let lastFetchTime = parseInt(localStorage.getItem(VILLAGE_TIME) || "0");
 
     if (cachedData && Date.now() < lastFetchTime + TIME_INTERVAL) {
+        alert("hi1");
         processVillagesData(cachedData);
     } else {
+        alert("hi2");
         fetchVillagesData();
     }
     alert(my_villages);
