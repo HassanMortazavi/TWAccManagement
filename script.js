@@ -8,12 +8,13 @@ var barbarians = [];
 var my_villages = [];
 
 function fetchVillagesData() {
+    alert("fetchVi");
     $.get('./village.txt', function (data) {
-        alert("fetchVi");
         localStorage.setItem(VILLAGE_TIME, Date.now());
         localStorage.setItem(VILLAGES_LIST, data);
         processVillagesData(data);
     }).fail(function (error) {
+        alert("error");
         console.error("Error fetching village data:", error);
         alert("Error fetching village data: " + error);
     });
