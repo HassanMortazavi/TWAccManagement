@@ -29,7 +29,7 @@ function processVillagesData(data) {
             my_villages.push(village);
         }
     });
-    document.body.innerHTML = my_villages;
+    
     populateVillageOptions();
     renderVillageMenu(my_villages);
 }
