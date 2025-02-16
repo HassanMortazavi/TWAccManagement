@@ -48,6 +48,7 @@ function checkMap() {
     } else {
         fetchVillagesData();
     }
+    alert(my_villages);
 }
 
 // Populate datalist for Source Village in Command Form
