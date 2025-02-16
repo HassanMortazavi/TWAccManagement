@@ -29,7 +29,7 @@ function processVillagesData(data) {
             my_villages.push(village);
         }
     });
-    
+    my_villages.sort((a, b) => a[1].localeCompare(b[1]));
     populateVillageOptions();
     renderVillageMenu(my_villages);
 }
