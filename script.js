@@ -21,6 +21,7 @@ function fetchVillagesData() {
 }
 
 function processVillagesData(data) {
+    alert("processVillagesData");
     villages = CSVToArray(data);
     barbarians = [];
     my_villages = [];
