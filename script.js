@@ -9,18 +9,15 @@ var my_villages = [];
 
 function fetchVillagesData() {
     $.get('./village.txt', function (data) {
-        alert("raftam too");
         localStorage.setItem(VILLAGE_TIME, Date.now());
         localStorage.setItem(VILLAGES_LIST, data);
         processVillagesData(data);
     }).fail(function (error) {
-        alert("error");
         console.error("Error fetching village data:", error);
     });
 }
 
 function processVillagesData(data) {
-    alert("processVillagesData");
     villages = CSVToArray(data);
     barbarians = [];
     my_villages = [];
