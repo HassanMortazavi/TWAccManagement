@@ -7,6 +7,12 @@ var villages = [];
 var barbarians = [];
 var my_villages = [];
 
+const CLIENT_ID = 'frp1a9o3sauju6t';
+const REDIRECT_URI = 'https://hassanmortazavi.github.io/TWAccManagement/'; // Change to your redirect URI
+const DROPBOX_API_URL = 'https://api.dropboxapi.com/2/files/';
+let ACCESS_TOKEN = '';
+
+
 function fetchVillagesData() {
     $.get('./village.txt', function (data) {
         localStorage.setItem(VILLAGE_TIME, Date.now());
@@ -166,3 +172,82 @@ function deleteCommand(id) {
 }
 
 checkMap();
+
+
+    
+    
+    
+
+    // Step 1: OAuth Authorization
+    document.getElementById('authorizeButton').addEventListener('click', function() {
+      const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}`;
+      window.location.href = authUrl;
+    });
+
+    // Step 2: Parse the token from URL (after redirect)
+    function getAccessTokenFromUrl() {
+      const params = new URLSearchParams(window.location.hash.substr(1));
+      if (params.has('access_token')) {
+        ACCESS_TOKEN = params.get('access_token');
+        localStorage.setItem('dropbox_token', ACCESS_TOKEN);  // Store token for later
+        fetchFileAndEdit();
+      }
+    }
+
+    // Get token if the page was redirected back from Dropbox
+    if (window.location.hash) {
+      getAccessTokenFromUrl();
+    }
+
+    // Step 3: Fetch file from Dropbox and edit it
+    function fetchFileAndEdit() {
+      $.ajax({
+        url: DROPBOX_API_URL + 'download',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ACCESS_TOKEN}`,
+          'Dropbox-API-Arg': JSON.stringify({ path: '/main145.js' }),
+        },
+        success: function(response) {
+          let fileContent = response.body;
+          fileContent = fileContent.split('\n');
+
+          // Find and edit the SCRIPT_REST_TIME
+          fileContent.forEach((line, index) => {
+            if (line.includes('SCRIPT_REST_TIME')) {
+              fileContent[index] = 'SCRIPT_REST_TIME = 30;'; // Example: change to 30 minutes
+            }
+          });
+
+          const newFileContent = fileContent.join('\n');
+          uploadEditedFile(newFileContent);
+        },
+        error: function(error) {
+          console.error('Error fetching file:', error);
+        }
+      });
+    }
+
+    // Step 4: Upload edited file to Dropbox
+    function uploadEditedFile(fileContent) {
+      $.ajax({
+        url: DROPBOX_API_URL + 'upload',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ACCESS_TOKEN}`,
+          'Content-Type': 'application/octet-stream',
+        },
+        data: fileContent,
+        dataType: 'json',
+        success: function(response) {
+          console.log('File uploaded successfully:', response);
+        },
+        error: function(error) {
+          console.error('Error uploading file:', error);
+        }
+      });
+   }
+
+
+
+
