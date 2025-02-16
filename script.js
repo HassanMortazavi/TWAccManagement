@@ -16,7 +16,6 @@ function fetchVillagesData() {
     }).fail(function (error) {
         alert("error");
         console.error("Error fetching village data:", error);
-        alert("Error fetching village data: " + error);
     });
 }
 
